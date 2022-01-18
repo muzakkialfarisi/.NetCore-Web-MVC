@@ -1,7 +1,13 @@
+using ASP_NET.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer( //konekin sql server
+    builder.Configuration.GetConnectionString("DefaultConnection"))); //nama koneksi dari .json
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //nambah karna klik kanan project manage nuget utk realtime update script
 
 var app = builder.Build();
 

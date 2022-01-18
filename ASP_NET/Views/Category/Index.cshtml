@@ -1,0 +1,50 @@
+﻿
+@model IEnumerable<Category>
+@{
+ViewData["Title"] = "Category";
+}
+
+
+<h1>Index Category</h1>
+
+<!-- Page Content -->
+<div id="page-content-wrapper">
+    <div class="container-fluid px-4">
+   
+        <div class="row my-5">
+            <h3 class="fs-4 mb-3">
+                <button type="button" class="btn btn-success" asp-controller="Category" asp-action="Create">Add +</button>
+            </h3>
+            <div class="col">
+                <table class="table bg-white rounded shadow-sm  table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="50">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Display Order</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var obj in Model){
+                        <tr>
+                            <th scope="row">@obj.Id</th>
+                            <td>@obj.Name</td>
+                            <td>@obj.DisplayOrder</td>
+                            <td>@obj.CreatedDateTime</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-warning">e</button>
+                                <button type="button" class="btn btn-outline-danger">d</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+<!-- /#page-content-wrapper -->
