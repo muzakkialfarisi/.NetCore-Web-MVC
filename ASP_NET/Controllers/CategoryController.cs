@@ -40,6 +40,7 @@ namespace ASP_NET.Controllers
             {
                 _db.Categories.Add(obj); //untuk menambahkan objek baru ke db
                 _db.SaveChanges();
+                TempData["success"] = "sukses dibuat";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -69,15 +70,48 @@ namespace ASP_NET.Controllers
             if (obj.Name == obj.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("CustomError", "Pesan bebas"); //sukasuka validation All
-                //gausah panggil fungsi diatas, kalau mau semua kist keluar
+                //gausah panggil fungsi diatas, kalau mau semua list keluar
             }
             if (ModelState.IsValid)
             {
                 _db.Categories.Update(obj); //update
                 _db.SaveChanges();
+                TempData["success"] = "sukses diupdate";
                 return RedirectToAction("Index");
             }
             return View(obj);
+        }
+
+        //get
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var categoryFromDb = _db.Categories.Find(id);
+
+            if (categoryFromDb == null)
+            {
+                return BadRequest();
+            }
+            return View(categoryFromDb);
+        }
+
+        //post
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            var obj = _db.Categories.Find(id);
+            if (obj is null)
+            {
+                return NotFound();
+            }
+            _db.Categories.Remove(obj); //update
+            _db.SaveChanges();
+            TempData["success"] = "sukses dihapus";
+            return RedirectToAction("Index");
         }
     }
 }
