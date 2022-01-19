@@ -34,8 +34,8 @@ ViewData["Title"] = "Category";
                             <td>@obj.DisplayOrder</td>
                             <td>@obj.CreatedDateTime</td>
                             <td>
-                                <button type="button" class="btn btn-outline-warning">e</button>
-                                <button type="button" class="btn btn-outline-danger">d</button>
+                                <a type="button" class="btn btn-outline-warning" asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id">e</a>
+                                <a type="button" class="btn btn-outline-danger">d</a>
                             </td>
                         </tr>
                         }
