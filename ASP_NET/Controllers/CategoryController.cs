@@ -7,17 +7,17 @@ namespace ASP.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(ICategoryRepository db)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
 
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> objCategoryList = _db.GetAll(); //buat ambil data dari database
+            IEnumerable<Category> objCategoryList = _unitOfWork.Category.GetAll(); //buat ambil data dari database
             return View(objCategoryList);
         }
 
@@ -39,8 +39,8 @@ namespace ASP.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Add(obj); //untuk menambahkan objek baru ke db
-                _db.Save();
+                _unitOfWork.Category.Add(obj); //untuk menambahkan objek baru ke db
+                _unitOfWork.Save();
                 TempData["success"] = "sukses dibuat";
                 return RedirectToAction("Index");
             }
@@ -56,7 +56,7 @@ namespace ASP.Controllers
             }
 
             //var categoryFromDb = _db.Categories.Find(id);
-            var categoryFromDbFirst = _db.GetFirstOrDefault(x => x.Id==id);
+            var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(x => x.Id==id);
 
             if(categoryFromDbFirst == null)
             {
@@ -77,8 +77,8 @@ namespace ASP.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Update(obj); //update
-                _db.Save();
+                _unitOfWork.Category.Update(obj); //update
+                _unitOfWork.Save();
                 TempData["success"] = "sukses diupdate";
                 return RedirectToAction("Index");
             }
@@ -92,7 +92,7 @@ namespace ASP.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _db.GetFirstOrDefault(x => x.Id == id);
+            var categoryFromDb = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -106,13 +106,13 @@ namespace ASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _db.GetFirstOrDefault(x=>x.Id==id);
+            var obj = _unitOfWork.Category.GetFirstOrDefault(x=>x.Id==id);
             if (obj is null)
             {
                 return NotFound();
             }
-            _db.Remove(obj); //update
-            _db.Save();
+            _unitOfWork.Category.Remove(obj); //update
+            _unitOfWork.Save();
             TempData["success"] = "sukses dihapus";
             return RedirectToAction("Index");
         }
