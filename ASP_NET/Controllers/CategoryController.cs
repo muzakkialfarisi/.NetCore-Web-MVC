@@ -1,8 +1,8 @@
-﻿using ASP_NET.Data;
-using ASP_NET.Models;
+﻿using ASP.DataAccess;
+using ASP.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASP_NET.Controllers
+namespace ASP.Controllers
 {
     public class CategoryController : Controller
     {
@@ -53,13 +53,15 @@ namespace ASP_NET.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _db.Categories.Find(id);
 
-            if(categoryFromDb == null)
+            //var categoryFromDb = _db.Categories.Find(id);
+            var categoryFromDbFirst = _db.Categories.FirstOrDefault(x => x.Name == "Id");
+
+            if(categoryFromDbFirst == null)
             {
                 return BadRequest();
             }
-            return View(categoryFromDb);
+            return View(categoryFromDbFirst);
         }
 
         //post
