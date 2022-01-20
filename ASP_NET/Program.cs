@@ -1,4 +1,6 @@
 using ASP.DataAccess;
+using ASP.DataAccess.Repository;
+using ASP.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer( //konekin sql server
     builder.Configuration.GetConnectionString("DefaultConnection"))); //nama koneksi dari .json
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+
+
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //nambah karna klik kanan project manage nuget utk realtime update script
 
 var app = builder.Build();

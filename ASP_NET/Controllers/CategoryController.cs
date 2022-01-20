@@ -1,4 +1,5 @@
 ﻿using ASP.DataAccess;
+using ASP.DataAccess.Repository.IRepository;
 using ASP.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,9 +7,9 @@ namespace ASP.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ICategoryRepository _db;
 
-        public CategoryController(ApplicationDbContext db)
+        public CategoryController(ICategoryRepository db)
         {
             _db = db;
 
@@ -16,7 +17,7 @@ namespace ASP.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Category> objCategoryList = _db.Categories; //buat ambil data dari database
+            IEnumerable<Category> objCategoryList = _db.GetAll(); //buat ambil data dari database
             return View(objCategoryList);
         }
 
@@ -38,8 +39,8 @@ namespace ASP.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj); //untuk menambahkan objek baru ke db
-                _db.SaveChanges();
+                _db.Add(obj); //untuk menambahkan objek baru ke db
+                _db.Save();
                 TempData["success"] = "sukses dibuat";
                 return RedirectToAction("Index");
             }
@@ -55,7 +56,7 @@ namespace ASP.Controllers
             }
 
             //var categoryFromDb = _db.Categories.Find(id);
-            var categoryFromDbFirst = _db.Categories.FirstOrDefault(x => x.Name == "Id");
+            var categoryFromDbFirst = _db.GetFirstOrDefault(x => x.Id==id);
 
             if(categoryFromDbFirst == null)
             {
@@ -76,8 +77,8 @@ namespace ASP.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj); //update
-                _db.SaveChanges();
+                _db.Update(obj); //update
+                _db.Save();
                 TempData["success"] = "sukses diupdate";
                 return RedirectToAction("Index");
             }
@@ -91,7 +92,7 @@ namespace ASP.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _db.Categories.Find(id);
+            var categoryFromDb = _db.GetFirstOrDefault(x => x.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -105,13 +106,13 @@ namespace ASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _db.Categories.Find(id);
+            var obj = _db.GetFirstOrDefault(x=>x.Id==id);
             if (obj is null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(obj); //update
-            _db.SaveChanges();
+            _db.Remove(obj); //update
+            _db.Save();
             TempData["success"] = "sukses dihapus";
             return RedirectToAction("Index");
         }
