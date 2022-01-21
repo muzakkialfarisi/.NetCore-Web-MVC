@@ -1,0 +1,39 @@
+﻿
+@{
+ViewData["Title"] = "Product";
+}
+
+<h1 class="text-center">Index Product</h1>
+
+@*manggil dari Shared semua alert yang ada*@
+<partial name="_Notification" />
+
+<!-- Page Content -->
+<div id="page-content-wrapper">
+    <div class="container-fluid px-4">
+   
+        <div class="row my-5">
+            <h3 class="fs-4 mb-3">
+                <a type="button" class="btn btn-success" asp-controller="Product" asp-action="Upsert">Add +</a>
+            </h3>
+            <div class="col">
+                <table class="table bg-white rounded shadow-sm  table-hover">
+                    <thead>
+                        <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">ISBN</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Authoe</th>
+                                <th scope="col">Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+<!-- /#page-content-wrapper -->

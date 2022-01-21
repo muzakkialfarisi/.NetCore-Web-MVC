@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace ASP.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CoverTypeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
 
@@ -18,8 +18,8 @@ namespace ASP.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Category> objCategoryList = _unitOfWork.Category.GetAll(); //buat ambil data dari database
-            return View(objCategoryList);
+            IEnumerable<CoverType> objCoverTypeList = _unitOfWork.CoverType.GetAll(); //buat ambil data dari database
+            return View(objCoverTypeList);
         }
 
         //get
@@ -31,16 +31,11 @@ namespace ASP.Controllers
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(CoverType obj)
         {
-            if(obj.Name == obj.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("CustomError", "Pesan bebas"); //sukasuka validation All
-                //gausah panggil fungsi diatas, kalau mau semua kist keluar
-            }
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Add(obj); //untuk menambahkan objek baru ke db
+                _unitOfWork.CoverType.Add(obj); //untuk menambahkan objek baru ke db
                 _unitOfWork.Save();
                 TempData["success"] = "sukses dibuat";
                 return RedirectToAction("Index");
@@ -56,29 +51,25 @@ namespace ASP.Controllers
                 return NotFound();
             }
 
-            //var categoryFromDb = _db.Categories.Find(id);
-            var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u => u.Id==id);
+            var covertypeFromDbFirst = _unitOfWork.CoverType.GetFirstOrDefault(u => u.Id==id);
 
-            if(categoryFromDbFirst == null)
+            if(covertypeFromDbFirst == null)
             {
                 return BadRequest();
             }
-            return View(categoryFromDbFirst);
+            return View(covertypeFromDbFirst);
         }
 
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(CoverType obj)
         {
-            if (obj.Name == obj.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("CustomError", "Pesan bebas"); //sukasuka validation All
-                //gausah panggil fungsi diatas, kalau mau semua list keluar
-            }
+            //    ModelState.AddModelError("CustomError", "Pesan bebas"); //sukasuka validation All
+            //    //gausah panggil fungsi diatas, kalau mau semua list keluar
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(obj); //update
+                _unitOfWork.CoverType.Update(obj); //update
                 _unitOfWork.Save();
                 TempData["success"] = "sukses diupdate";
                 return RedirectToAction("Index");
@@ -93,13 +84,13 @@ namespace ASP.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
+            var covertypeFromDb = _unitOfWork.CoverType.GetFirstOrDefault(u => u.Id == id);
 
-            if (categoryFromDb == null)
+            if (covertypeFromDb == null)
             {
                 return BadRequest();
             }
-            return View(categoryFromDb);
+            return View(covertypeFromDb);
         }
 
         //post
@@ -107,12 +98,12 @@ namespace ASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _unitOfWork.Category.GetFirstOrDefault(u=>u.Id==id);
+            var obj = _unitOfWork.CoverType.GetFirstOrDefault(u=>u.Id==id);
             if (obj is null)
             {
                 return NotFound();
             }
-            _unitOfWork.Category.Remove(obj); //update
+            _unitOfWork.CoverType.Remove(obj); //update
             _unitOfWork.Save();
             TempData["success"] = "sukses dihapus";
             return RedirectToAction("Index");
