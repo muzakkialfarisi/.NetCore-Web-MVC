@@ -23,8 +23,7 @@ namespace ASP.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> objProductList = _unitOfWork.Product.GetAll(); //buat ambil data dari database
-            return View(objProductList);
+            return View();
         }     
 
         //get
@@ -121,5 +120,16 @@ namespace ASP.Controllers
             TempData["success"] = "sukses dihapus";
             return RedirectToAction("Index");
         }
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var productList = _unitOfWork.Product.GetAll();
+            return Json(new {data = productList});
+        }
+
+        #endregion
     }
 }
