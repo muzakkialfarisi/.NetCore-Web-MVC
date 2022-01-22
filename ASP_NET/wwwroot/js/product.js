@@ -15,6 +15,16 @@ function loadDataTable() {
             { "data": "price", "width": "15%" },
             { "data": "author", "width": "15%"},
             { "data": "category.name", "width": "15%" },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                                <a href="/Admin/Product/Upsert?id=${data}">edit</a>
+                                <a >delete</a>
+
+                           `
+                },
+            },
         ]
     });
 }
