@@ -12,7 +12,6 @@ namespace ASP.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
         private readonly IWebHostEnvironment _hostEnvironment;
 
         public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
@@ -87,38 +86,6 @@ namespace ASP.Controllers
                 return RedirectToAction("Index");
             }
             return View(obj);
-        }
-
-        //get
-        public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var productFromDb = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
-
-            if (productFromDb == null)
-            {
-                return BadRequest();
-            }
-            return View(productFromDb);
-        }
-
-        //post
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeletePost(int? id)
-        {
-            var obj = _unitOfWork.Product.GetFirstOrDefault(x=>x.Id==id);
-            if (obj is null)
-            {
-                return NotFound();
-            }
-            _unitOfWork.Product.Remove(obj); //update
-            _unitOfWork.Save();
-            TempData["success"] = "sukses dihapus";
-            return RedirectToAction("Index");
         }
 
         #region API CALLS
