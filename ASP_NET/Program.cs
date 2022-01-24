@@ -12,8 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection"))); //nama koneksi dari .json
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true) //jika email terferifikasi
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddDefaultIdentity<IdentityUser>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //nambah karna klik kanan project manage nuget utk realtime update script
 
@@ -37,7 +36,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication(); //nambah untuk auth
 app.UseAuthorization();
-
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
